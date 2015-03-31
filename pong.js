@@ -189,17 +189,17 @@ function step(timestamp){
 		//drawing
 		clear(); //CLEAR ALL
 
-		drawBackground("white", "black");  // draw the background
+		drawBackground("black", "black");  // draw the background
 		// draw the middle line
-		drawLine([WIDTH / 2, 0], [WIDTH / 2, HEIGHT], "black");
+		drawLine([WIDTH / 2, 0], [WIDTH / 2, HEIGHT], "white");
 		//left and right gutters
-		drawLine([PAD_WIDTH, 0], [PAD_WIDTH, HEIGHT], "black");
-		drawLine([WIDTH - PAD_WIDTH, 0], [WIDTH - PAD_WIDTH, HEIGHT], "black");
+		drawLine([PAD_WIDTH, 0], [PAD_WIDTH, HEIGHT], "white");
+		drawLine([WIDTH - PAD_WIDTH, 0], [WIDTH - PAD_WIDTH, HEIGHT], "white");
 
 		//update ball
 		ball_pos[0] += ball_vel[0];
 		ball_pos[1] += ball_vel[1];
-		drawCircle(ball_pos[0], ball_pos[1], BALL_RADIUS, "black", "black");
+		drawCircle(ball_pos[0], ball_pos[1], BALL_RADIUS, "white", "white");
 
 		//update paddle
 		if(isPaddleStayCanvans(paddle1_pos, paddle1_vel)){
@@ -209,12 +209,12 @@ function step(timestamp){
 			paddle2_pos[1] += paddle2_vel[1];
 		}
 		//draw tow paddles
-		drawRect2(paddle1_pos, PAD_WIDTH, PAD_HEIGHT, "black", "black");
-		drawRect2(paddle2_pos, PAD_WIDTH, PAD_HEIGHT, "black", "black");
+		drawRect2(paddle1_pos, PAD_WIDTH, PAD_HEIGHT, "white", "white");
+		drawRect2(paddle2_pos, PAD_WIDTH, PAD_HEIGHT, "white", "white");
 
 		//draw two scores
-		drawText(score1, WIDTH / 3, HEIGHT / 4);
-		drawText(score2, WIDTH / 3 * 2, HEIGHT / 4);
+		drawText(score1, WIDTH * 0.4, HEIGHT / 4, "48px white");
+		drawText(score2, WIDTH * 0.56, HEIGHT / 4, "48px white");
 
 		// ball and border(top, bottom) collides
 		if(ball_pos[1] <= BALL_RADIUS || ball_pos[1] >= HEIGHT - BALL_RADIUS - 1){
