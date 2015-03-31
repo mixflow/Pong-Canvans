@@ -38,7 +38,6 @@ function getRandomArbitrary(min, max) {
 
 //helper function
 function spawnBall(direction){
-	direction = direction || RIGHT;
 
 	ball_pos = [WIDTH / 2, HEIGHT / 2];
 	ball_vel = [getRandomArbitrary(120, 240) / FPS, getRandomArbitrary(60, 80) / FPS];
@@ -214,12 +213,46 @@ function step(timestamp){
 			ball_vel[1] = -ball_vel[1];
 		}
 
+		var isReachGutter = false;
+		var respawnDirection = undefined;
 		// gutter and ball collides
-		/*if(ball_pos[0] <= BALL_RADIUS + PAD_WIDTH){
+		if(ball_pos[0] <= BALL_RADIUS + PAD_WIDTH){
+			isReachGutter = true;
 			//reach left gutter
-		}else if(){
+			//hit the left paddle
+			if(ball_pos[1] >= paddle1_pos[1] - HALF_PAD_HEIGHT & 
+				ball_pos[1] <= paddle1_pos[1] +HALF_PAD_HEIGHT){
 
-		}*/
+			}else{
+				respawnDirection = RIGHT;
+			}
+		}else if(ball_pos[0] >= WIDTH - PAD_WIDTH - BALL_RADIUS){
+			isReachGutter = true;
+			//reach right gutter
+			//hit the right paddle
+			if(ball_pos[1] >= paddle2_pos[1] - HALF_PAD_HEIGHT & 
+				ball_pos[1] <= paddle2_pos[1] +HALF_PAD_HEIGHT){
+
+			}else{
+				respawnDirection = LEFT;
+			}
+		}
+
+		if(isReachGutter === true){
+			if(typeof respawnDirection === "undefined"){
+				// not miss ball and reflect the horizontal velocity
+				ball_vel[0] = -ball_vel[0];
+			}else{
+				// miss ball and respawn ball
+				spawnBall(respawnDirection)
+				if(respawnDirection === RIGHT){
+					score2 += 1;
+				}else{
+					score1 += 1;
+				}
+				console.log(score1 + " : " + score2);
+			}
+		}
 	}
 }
 
