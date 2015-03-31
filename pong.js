@@ -208,6 +208,18 @@ function step(timestamp){
 
 		drawRect2(paddle1_pos, PAD_WIDTH, PAD_HEIGHT, "black", "black");
 		drawRect2(paddle2_pos, PAD_WIDTH, PAD_HEIGHT, "black", "black");
+
+		// ball and border(top, bottom) collides
+		if(ball_pos[1] <= BALL_RADIUS || ball_pos[1] >= HEIGHT - BALL_RADIUS - 1){
+			ball_vel[1] = -ball_vel[1];
+		}
+
+		// gutter and ball collides
+		/*if(ball_pos[0] <= BALL_RADIUS + PAD_WIDTH){
+			//reach left gutter
+		}else if(){
+
+		}*/
 	}
 }
 
