@@ -125,38 +125,50 @@ var KEY_MAP ={
 	"s": 83
 };
 
+// record held key
+var heldKeycodes = new Set();
 
-function keyUpHandler(evt){
-	var code = evt.keyCode;
-
-	if(code === KEY_MAP.up){
-		paddle2_vel[1] += velocity;
-	}else if(code === KEY_MAP.down){
-		paddle2_vel[1] -= velocity;
-	}
-
-	if(code === KEY_MAP.w){
-		paddle1_vel[1] += velocity; 
-	}else if(code === KEY_MAP.s){
-		paddle1_vel[1] -= velocity;
-	}
-}
 
 function keyDownHandler(evt){
 	var code = evt.keyCode;
-	console.log(code);
+	
+	if(!heldKeycodes.has(code)){
+		console.debug("down " + code);
+		if(code === KEY_MAP.up){
+			paddle2_vel[1] -= velocity;
+		}else if(code === KEY_MAP.down){
+			paddle2_vel[1] += velocity;
+		}
 
-	if(code === KEY_MAP.up){
-		paddle2_vel[1] -= velocity;
-	}else if(code === KEY_MAP.down){
-		paddle2_vel[1] += velocity;
+		if(code === KEY_MAP.w){
+			paddle1_vel[1] -= velocity; 
+		}else if(code === KEY_MAP.s){
+			paddle1_vel[1] += velocity;
+		}
+		//record the held key code
+		heldKeycodes.add(code);
 	}
+}
 
-	if(code === KEY_MAP.w){
-		paddle1_vel[1] -= velocity; 
-	}else if(code === KEY_MAP.s){
-		paddle1_vel[1] += velocity;
+function keyUpHandler(evt){
+	var code = evt.keyCode;
+	if(heldKeycodes.has(code)){
+		console.debug("up " + code);
+		if(code === KEY_MAP.up){
+			paddle2_vel[1] += velocity;
+		}else if(code === KEY_MAP.down){
+			paddle2_vel[1] -= velocity;
+		}
+
+		if(code === KEY_MAP.w){
+			paddle1_vel[1] += velocity; 
+		}else if(code === KEY_MAP.s){
+			paddle1_vel[1] -= velocity;
+		}
+		//remove the held keycode
+		heldKeycodes.delete(code);
 	}
+	
 }
 
 
