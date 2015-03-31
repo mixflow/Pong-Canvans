@@ -75,6 +75,11 @@ function clear(){
 	ctx.clearRect(0, 0, WIDTH, HEIGHT);
 }
 
+function drawText(text, x, y, font){
+	ctx.font = font || "20px serif";
+	ctx.fillText(text, x, y);
+}
+
 function drawCircle(x,y,r, bgColor, borderColor) {
 	ctx.fillStyle = bgColor;
 	ctx.strokeStyle = borderColor;
@@ -132,7 +137,6 @@ function keyDownHandler(evt){
 	var code = evt.keyCode;
 	
 	if(!heldKeycodes.has(code)){
-		console.debug("down " + code);
 		if(code === KEY_MAP.up){
 			paddle2_vel[1] -= velocity;
 		}else if(code === KEY_MAP.down){
@@ -151,8 +155,8 @@ function keyDownHandler(evt){
 
 function keyUpHandler(evt){
 	var code = evt.keyCode;
+
 	if(heldKeycodes.has(code)){
-		console.debug("up " + code);
 		if(code === KEY_MAP.up){
 			paddle2_vel[1] += velocity;
 		}else if(code === KEY_MAP.down){
@@ -182,20 +186,20 @@ function step(timestamp){
 		//update time
 		beforeTime = nowTime - (delta % INTERVAL);
 
-
 		//drawing
 		clear(); //CLEAR ALL
+
 		drawBackground("white", "black");  // draw the background
 		// draw the middle line
 		drawLine([WIDTH / 2, 0], [WIDTH / 2, HEIGHT], "black");
-		//gutter
+		//left and right gutters
 		drawLine([PAD_WIDTH, 0], [PAD_WIDTH, HEIGHT], "black");
 		drawLine([WIDTH - PAD_WIDTH, 0], [WIDTH - PAD_WIDTH, HEIGHT], "black");
 
 		//update ball
 		ball_pos[0] += ball_vel[0];
 		ball_pos[1] += ball_vel[1];
-		drawCircle(ball_pos[0], ball_pos[1], BALL_RADIUS, "white", "black");
+		drawCircle(ball_pos[0], ball_pos[1], BALL_RADIUS, "black", "black");
 
 		//update paddle
 		if(isPaddleStayCanvans(paddle1_pos, paddle1_vel)){
@@ -204,9 +208,13 @@ function step(timestamp){
 		if(isPaddleStayCanvans(paddle2_pos, paddle2_vel)){
 			paddle2_pos[1] += paddle2_vel[1];
 		}
-
+		//draw tow paddles
 		drawRect2(paddle1_pos, PAD_WIDTH, PAD_HEIGHT, "black", "black");
 		drawRect2(paddle2_pos, PAD_WIDTH, PAD_HEIGHT, "black", "black");
+
+		//draw two scores
+		drawText(score1, WIDTH / 3, HEIGHT / 4);
+		drawText(score2, WIDTH / 3 * 2, HEIGHT / 4);
 
 		// ball and border(top, bottom) collides
 		if(ball_pos[1] <= BALL_RADIUS || ball_pos[1] >= HEIGHT - BALL_RADIUS - 1){
@@ -238,10 +246,12 @@ function step(timestamp){
 			}
 		}
 
+
+
 		if(isReachGutter === true){
 			if(typeof respawnDirection === "undefined"){
 				// not miss ball and reflect the horizontal velocity
-				ball_vel[0] = -ball_vel[0];
+				ball_vel[0] = -ball_vel[0] * 1.1;
 			}else{
 				// miss ball and respawn ball
 				spawnBall(respawnDirection)
