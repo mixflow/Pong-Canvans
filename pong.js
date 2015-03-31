@@ -63,7 +63,8 @@ function newGame(){
 }
 
 function isPaddleStayCanvans(pos, vel){
-	//pos[1] <= 
+	return !(pos[1] <= HALF_PAD_HEIGHT & vel[1] < 0) & 
+		!(pos[1] >= HEIGHT - HALF_PAD_HEIGHT - 1 & vel[1] > 0);
 }
 
 // canvans handler
@@ -124,6 +125,7 @@ var KEY_MAP ={
 	"s": 83
 };
 
+
 function keyUpHandler(evt){
 	var code = evt.keyCode;
 
@@ -142,6 +144,7 @@ function keyUpHandler(evt){
 
 function keyDownHandler(evt){
 	var code = evt.keyCode;
+	console.log(code);
 
 	if(code === KEY_MAP.up){
 		paddle2_vel[1] -= velocity;
@@ -155,10 +158,6 @@ function keyDownHandler(evt){
 		paddle1_vel[1] += velocity;
 	}
 }
-
-
-
-
 
 
 function step(timestamp){
@@ -188,10 +187,14 @@ function step(timestamp){
 		drawCircle(ball_pos[0], ball_pos[1], BALL_RADIUS, "white", "black");
 
 		//update paddle
-		paddle1_pos[1] += paddle1_vel[1];
-		paddle2_pos[1] += paddle2_vel[1];
-		drawRect2(paddle1_pos, PAD_WIDTH, PAD_HEIGHT, "black", "black");
+		if(isPaddleStayCanvans(paddle1_pos, paddle1_vel)){
+			paddle1_pos[1] += paddle1_vel[1];
+		}
+		if(isPaddleStayCanvans(paddle2_pos, paddle2_vel)){
+			paddle2_pos[1] += paddle2_vel[1];
+		}
 
+		drawRect2(paddle1_pos, PAD_WIDTH, PAD_HEIGHT, "black", "black");
 		drawRect2(paddle2_pos, PAD_WIDTH, PAD_HEIGHT, "black", "black");
 	}
 }
@@ -200,8 +203,8 @@ function init(){
 	//start new game
 	newGame();
 	//register key event
-	window.addEventListener('keydown',keyDownHandler,true);
-	window.addEventListener('keyup',keyUpHandler,true);
+	window.addEventListener('keydown', keyDownHandler, false);
+	window.addEventListener('keyup', keyUpHandler, false);
 	// start frame step
 	step(0);
 }
