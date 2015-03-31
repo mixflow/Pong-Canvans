@@ -260,7 +260,6 @@ function step(timestamp){
 				}else{
 					score1 += 1;
 				}
-				console.log(score1 + " : " + score2);
 			}
 		}
 	}
