@@ -2,6 +2,7 @@
 // the fixed parameters which wouldn't be changed after.
 var WIDTH = 600
 var HEIGHT = 400       
+var BACKGROUND_PADDING = 20
 var BALL_RADIUS = 20
 var PAD_WIDTH = 8
 var PAD_HEIGHT = 80
@@ -24,12 +25,22 @@ var paddle2_pos, paddle2_vel;
 var score1, score2;
 var velocity = 10;
 
+
+//create the background
+var blackBackground = document.createElement("div");
+blackBackground.style.cssText = "display:block; background: black";
+blackBackground.style.width = WIDTH + BACKGROUND_PADDING * 2 + "px";
+blackBackground.style.height = HEIGHT + BACKGROUND_PADDING * 2 + "px";
+blackBackground.style.textAlign = "center";
+document.body.appendChild(blackBackground);
+
 // Create the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
-document.body.appendChild(canvas);
+canvas.style.marginTop = BACKGROUND_PADDING + "px";
+blackBackground.appendChild(canvas);
 
 //uiltity function
 function getRandomArbitrary(min, max) {
@@ -189,7 +200,7 @@ function step(timestamp){
 		//drawing
 		clear(); //CLEAR ALL
 
-		drawBackground("black", "black");  // draw the background
+		drawBackground("black", "white");  // draw the background
 		// draw the middle line
 		drawLine([WIDTH / 2, 0], [WIDTH / 2, HEIGHT], "white");
 		//left and right gutters
